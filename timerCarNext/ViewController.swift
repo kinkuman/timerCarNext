@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    // 空の配列を用意
+    // 空のImageViewの配列を用意
     var carImageViewArray:[UIImageView] = []
     
     
@@ -19,9 +19,6 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         // アニメーションタイマー開始
-//        let displayLink = CADisplayLink(target: self, selector: #selector(step))
-//        displayLink.preferredFramesPerSecond = 0
-//        displayLink.add(to: RunLoop.main, forMode: .defaultRunLoopMode)
         Timer.scheduledTimer(timeInterval: 1/60.0, target: self, selector: #selector(step), userInfo: nil, repeats: true)
     }
 
@@ -30,6 +27,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    // 定期処理
     @objc func step() {
         
         for carImageView in carImageViewArray {
@@ -40,21 +38,25 @@ class ViewController: UIViewController {
             
             // 車の中心位置が画面幅＋車の幅分移動すると画面から隠れる
             if carImageView.center.x > view.bounds.width + carWidth/2 {
+                // 隠れたら不要なので削除
+                carImageViewArray.remove(at: carImageViewArray.index(of: carImageView)!)
                 carImageView.removeFromSuperview()
             }
         }
         
-        print(self.view.subviews.count)
+        // 画面に乗ってるViewの数を表示
+//        print(self.view.subviews.count)
     }
     
+    // どこでもいいからタッチイベント
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        // 新しい車を作る
+        /* 新しい車を作る */
 
         // 画像の読みこみ
-        var image = UIImage(named: "carR")!
+        var image = UIImage(named: "greenCar")!
 
-        // ランダムな数を作って
+        // 0-9のランダムな数を作って
         let random = Int(arc4random_uniform(10))
         
         let carImageView:UIImageView
@@ -65,10 +67,11 @@ class ViewController: UIViewController {
             carImageView = UIImageView(image: image)
             carImageView.tintColor = UIColor.black
         } else {
+            // 5以外はそのままつかう
             carImageView  = UIImageView(image: image)
         }
 
-        // 適当なY座標を作る
+        // 画面高さ内で適当なY座標を作る
         let yAxis = arc4random_uniform( UInt32(self.view.bounds.height) )
         
         // 初期位置に指定
