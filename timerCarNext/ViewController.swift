@@ -67,18 +67,7 @@ class ViewController: UIViewController {
         } else {
             carImageView  = UIImageView(image: image)
         }
-        
-        
 
-        
-        
-            
-        
-
-        
-        
-
-        
         // 適当なY座標を作る
         let yAxis = arc4random_uniform( UInt32(self.view.bounds.height) )
         
@@ -90,7 +79,6 @@ class ViewController: UIViewController {
         
         // 最後に追加した要素を画面にも登場させる
         self.view.addSubview(carImageView)
-
     }
 }
 
